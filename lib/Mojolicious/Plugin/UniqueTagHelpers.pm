@@ -1,7 +1,7 @@
 package Mojolicious::Plugin::UniqueTagHelpers;
 use Mojo::Base 'Mojolicious::Plugin';
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 sub register {
     my ($self, $app) = @_;
@@ -48,7 +48,8 @@ __END__
 
 =head1 NAME
 
-Mojolicious::Plugin::UniqueTagHelpers - Mojolicious Plugin
+Mojolicious::Plugin::UniqueTagHelpers - Mojolicious Plugin to use unique
+javascript and stylesheet links.
 
 =head1 SYNOPSIS
 
@@ -58,23 +59,90 @@ Mojolicious::Plugin::UniqueTagHelpers - Mojolicious Plugin
   # Mojolicious::Lite
   plugin 'UniqueTagHelpers';
 
+  stylesheet_for
+
 =head1 DESCRIPTION
 
-L<Mojolicious::Plugin::UniqueTagHelpers> is a L<Mojolicious> plugin.
+L<Mojolicious::Plugin::UniqueTagHelpers> is a HTML tag helpers for
+javascript and stylesheet allowing multiple include in templates.
 
-=head1 METHODS
+=head1 HELPERS
 
-L<Mojolicious::Plugin::UniqueTagHelpers> inherits all methods from
-L<Mojolicious::Plugin> and implements the following new ones.
+=head2 stylesheet_for
 
-=head2 register
+    @@ index.html.ep
+    % layout 'default';
+    % stylesheet_for 'header' => 'css/main.css';
+    ...
+    % include 'someblock'
 
-  $plugin->register(Mojolicious->new);
+    @@ someblock.html.ep
+    ...
+    % stylesheet_for 'header' => 'css/main.css';
 
-Register plugin in L<Mojolicious> application.
+    @@ layouts/default.html.ep
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <title>MyApp</title>
+            %= stylesheet_for 'header';
+        </head>
+        <body>
+            <%= content %>
+        </body>
+    </html
+
+This example generate only one link to F<css/main.css>:
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <title>MyApp</title>
+            <link href="css/main.css" rel="stylesheet" />
+        </head>
+        <body>
+        </body>
+    </html>
+
+=head2 javascript_for
+
+    @@ index.html.ep
+    % layout 'default';
+    % javascript_for 'footer' => 'js/main.js';
+    ...
+    % include 'someblock'
+
+    @@ someblock.html.ep
+    ...
+    % javascript_for 'footer' => 'js/main.js';
+
+    @@ layouts/default.html.ep
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <title>MyApp</title>
+        </head>
+        <body>
+            <%= content %>
+            %= javascript_for 'footer';
+        </body>
+    </html
+
+This example generate only one link to F<js/main.js>:
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <title>MyApp</title>
+        </head>
+        <body>
+            <script src="js/main.js"></script>
+        </body>
+    </html>
 
 =head1 SEE ALSO
 
-L<Mojolicious>, L<Mojolicious::Guides>, L<http://mojolicio.us>.
+L<Mojolicious>, L<Mojolicious::Guides>, L<Mojolicious::Plugin::TagHelpers>,
+L<http://mojolicio.us>.
 
 =cut

@@ -1,2 +1,2 @@
-# mojolicious-plugin-unique_tag_helpers
-Unique stylesheet and javascript helpers
+Mojolicious::Plugin::UniqueTagHelpers - Mojolicious Plugin to use unique
+javascript and stylesheet links.
