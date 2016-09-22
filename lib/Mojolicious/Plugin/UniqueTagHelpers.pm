@@ -3,6 +3,8 @@ use Mojo::Base 'Mojolicious::Plugin';
 
 our $VERSION = '0.03';
 
+sub _block { ref $_[0] eq 'CODE' ? $_[0]() : $_[0] }
+
 sub register {
     my ($self, $app) = @_;
 
@@ -13,9 +15,10 @@ sub register {
         my $hash = $c->stash->{'uniquetaghelpers.stylesheet'} ||= {};
         if( defined $content ) {
             $hash->{$name} ||= {};
+            my $key = _block $content;
 
-            return $c->content( $name ) if exists $hash->{$name}{$content};
-            $hash->{$name}{$content} = 1;
+            return $c->content( $name ) if exists $hash->{$name}{$key};
+            $hash->{$name}{$key} = 1;
 
             $c->content_for( $name => $c->stylesheet($content) );
         }
@@ -25,13 +28,14 @@ sub register {
     $app->helper(javascript_for => sub {
         my ($c, $name, $content) = @_;
         $name ||= 'content';
+        my $key = _block $content;
 
         my $hash = $c->stash->{'uniquetaghelpers.javascript'} ||= {};
         if( defined $content ) {
             $hash->{$name} ||= {};
 
-            return $c->content( $name ) if exists $hash->{$name}{$content};
-            $hash->{$name}{$content} = 1;
+            return $c->content( $name ) if exists $hash->{$name}{$key};
+            $hash->{$name}{$key} = 1;
 
             $c->content_for( $name => $c->javascript($content) );
         }
