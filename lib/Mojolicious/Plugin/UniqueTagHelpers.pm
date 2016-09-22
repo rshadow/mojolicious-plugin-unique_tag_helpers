@@ -1,7 +1,7 @@
 package Mojolicious::Plugin::UniqueTagHelpers;
 use Mojo::Base 'Mojolicious::Plugin';
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 sub _block { ref $_[0] eq 'CODE' ? $_[0]() : $_[0] }
 
