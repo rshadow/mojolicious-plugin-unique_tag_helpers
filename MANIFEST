@@ -1,0 +1,12 @@
+Changes
+lib/Mojolicious/Plugin/UniqueTagHelpers.pm
+Makefile.PL
+README.md
+t/00-load.t
+t/10-stylesheet.t
+t/11-stylesheet-block.t
+t/20-javascript.t
+t/21-javascript-block.t
+t/manifest.t
+t/pod-coverage.t
+t/pod.t
