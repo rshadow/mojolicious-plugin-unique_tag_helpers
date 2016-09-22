@@ -1,5 +1,8 @@
 Revision history for Mojolicious-Plugin-UniqueTagHelpers
 
+0.03    22-09-2016
+        Reduce memory usage.
+
 0.02    21-09-2016
         Documentation.
 

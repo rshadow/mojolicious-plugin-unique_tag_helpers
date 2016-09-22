@@ -1,7 +1,7 @@
 package Mojolicious::Plugin::UniqueTagHelpers;
 use Mojo::Base 'Mojolicious::Plugin';
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 sub register {
     my ($self, $app) = @_;
@@ -15,10 +15,9 @@ sub register {
             $hash->{$name} ||= {};
 
             return $c->content( $name ) if exists $hash->{$name}{$content};
+            $hash->{$name}{$content} = 1;
 
-            $c->content_for( $name => $hash->{$name}{$content} =
-                $c->stylesheet($content)
-            );
+            $c->content_for( $name => $c->stylesheet($content) );
         }
         return $c->content( $name );
     });
@@ -32,10 +31,9 @@ sub register {
             $hash->{$name} ||= {};
 
             return $c->content( $name ) if exists $hash->{$name}{$content};
+            $hash->{$name}{$content} = 1;
 
-            $c->content_for( $name => $hash->{$name}{$content} =
-                $c->javascript($content)
-            );
+            $c->content_for( $name => $c->javascript($content) );
         }
         return $c->content( $name );
     });
