@@ -61,8 +61,6 @@ javascript and stylesheet links.
   # Mojolicious::Lite
   plugin 'UniqueTagHelpers';
 
-  stylesheet_for
-
 =head1 DESCRIPTION
 
 L<Mojolicious::Plugin::UniqueTagHelpers> is a HTML tag helpers for
