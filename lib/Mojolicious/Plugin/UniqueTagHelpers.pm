@@ -1,5 +1,6 @@
 package Mojolicious::Plugin::UniqueTagHelpers;
 use Mojo::Base 'Mojolicious::Plugin';
+use Mojo::Util 'md5_sum';
 
 our $VERSION = '0.05';
 
@@ -15,7 +16,7 @@ sub register {
         my $hash = $c->stash->{'uniquetaghelpers.stylesheet'} ||= {};
         if( defined $content ) {
             $hash->{$name} ||= {};
-            my $key = _block $content;
+            my $key = md5_sum( _block($content) // '' );
 
             return $c->content( $name ) if exists $hash->{$name}{$key};
             $hash->{$name}{$key} = 1;
@@ -28,7 +29,7 @@ sub register {
     $app->helper(javascript_for => sub {
         my ($c, $name, $content) = @_;
         $name ||= 'content';
-        my $key = _block $content;
+        my $key = md5_sum( _block($content) // '' );
 
         my $hash = $c->stash->{'uniquetaghelpers.javascript'} ||= {};
         if( defined $content ) {
