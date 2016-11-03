@@ -2,7 +2,7 @@
 Changes
 lib/Mojolicious/Plugin/UniqueTagHelpers.pm
 Makefile.PL
-MANIFEST
+MANIFEST			This list of files
 MANIFEST.SKIP
 README.md
 t/00-load.t
@@ -12,6 +12,6 @@ t/20-javascript.t
 t/21-javascript-block.t
 t/30-unique.t
 t/31-unique-block.t
+t/32-unique-long-key.t
 t/manifest.t
-t/pod-coverage.t
 t/pod.t

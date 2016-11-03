@@ -2,12 +2,15 @@ package Mojolicious::Plugin::UniqueTagHelpers;
 use Mojo::Base 'Mojolicious::Plugin';
 use Mojo::Util 'md5_sum';
 
-our $VERSION = '1.0';
+our $VERSION = '1.1';
 
 sub _block { ref $_[0] eq 'CODE' ? $_[0]() : $_[0] }
 
 sub register {
-    my ($self, $app) = @_;
+    my ($self, $app, $conf) = @_;
+
+    $conf ||= {};
+    $conf->{max_key_length} //= 256;
 
     $app->helper(stylesheet_for => sub {
         my ($c, $name, $content) = @_;
@@ -16,7 +19,9 @@ sub register {
         my $hash = $c->stash->{'uniquetaghelpers.stylesheet'} ||= {};
         if( defined $content ) {
             $hash->{$name} ||= {};
-            my $key = md5_sum( _block($content) // '' );
+            my $key = _block($content);
+            $key    = md5_sum( $key // '' )
+                if $conf->{max_key_length} < length $key;
 
             return $c->content( $name ) if exists $hash->{$name}{$key};
             $hash->{$name}{$key} = 1;
@@ -29,11 +34,13 @@ sub register {
     $app->helper(javascript_for => sub {
         my ($c, $name, $content) = @_;
         $name ||= 'content';
-        my $key = md5_sum( _block($content) // '' );
 
         my $hash = $c->stash->{'uniquetaghelpers.javascript'} ||= {};
         if( defined $content ) {
             $hash->{$name} ||= {};
+            my $key = _block($content);
+            $key    = md5_sum( $key // '' )
+                if $conf->{max_key_length} < length $key;
 
             return $c->content( $name ) if exists $hash->{$name}{$key};
             $hash->{$name}{$key} = 1;
@@ -46,11 +53,13 @@ sub register {
     $app->helper(unique_for => sub {
         my ($c, $name, $content) = @_;
         $name ||= 'content';
-        my $key = md5_sum( _block($content) // '' );
 
         my $hash = $c->stash->{'uniquetaghelpers.unique'} ||= {};
         if( defined $content ) {
             $hash->{$name} ||= {};
+            my $key = _block($content);
+            $key    = md5_sum( $key // '' )
+                if $conf->{max_key_length} < length $key;
 
             return $c->content( $name ) if exists $hash->{$name}{$key};
             $hash->{$name}{$key} = 1;
@@ -83,6 +92,13 @@ javascript and stylesheet links.
 
 L<Mojolicious::Plugin::UniqueTagHelpers> is a HTML tag helpers for
 javascript and stylesheet allowing multiple include in templates.
+
+=head1 OPTIONS
+
+=head2 max_key_length
+
+Maximun content length to use as is as keys. If content length more that it
+then use MD5 to make keys for reduce memory usage. Default: 256.
 
 =head1 HELPERS
 
