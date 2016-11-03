@@ -2,7 +2,7 @@ package Mojolicious::Plugin::UniqueTagHelpers;
 use Mojo::Base 'Mojolicious::Plugin';
 use Mojo::Util 'md5_sum';
 
-our $VERSION = '0.05';
+our $VERSION = '1.0';
 
 sub _block { ref $_[0] eq 'CODE' ? $_[0]() : $_[0] }
 
