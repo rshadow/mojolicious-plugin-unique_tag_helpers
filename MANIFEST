@@ -1,3 +1,4 @@
+.travis.yml
 Changes
 lib/Mojolicious/Plugin/UniqueTagHelpers.pm
 Makefile.PL
