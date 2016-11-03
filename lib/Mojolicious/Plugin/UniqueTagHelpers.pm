@@ -42,6 +42,23 @@ sub register {
         }
         return $c->content( $name );
     });
+
+    $app->helper(unique_for => sub {
+        my ($c, $name, $content) = @_;
+        $name ||= 'content';
+        my $key = md5_sum( _block($content) // '' );
+
+        my $hash = $c->stash->{'uniquetaghelpers.unique'} ||= {};
+        if( defined $content ) {
+            $hash->{$name} ||= {};
+
+            return $c->content( $name ) if exists $hash->{$name}{$key};
+            $hash->{$name}{$key} = 1;
+
+            $c->content_for( $name => $content );
+        }
+        return $c->content( $name );
+    });
 }
 
 1;
@@ -86,7 +103,7 @@ javascript and stylesheet allowing multiple include in templates.
     <html>
         <head>
             <title>MyApp</title>
-            %= stylesheet_for 'header';
+            %= content_for 'header';
         </head>
         <body>
             <%= content %>
@@ -125,7 +142,7 @@ This example generate only one link to F<css/main.css>:
         </head>
         <body>
             <%= content %>
-            %= javascript_for 'footer';
+            %= content_for 'footer';
         </body>
     </html
 
@@ -138,6 +155,44 @@ This example generate only one link to F<js/main.js>:
         </head>
         <body>
             <script src="js/main.js"></script>
+        </body>
+    </html>
+
+=head2 unique_for
+
+    @@ index.html.ep
+    % layout 'default';
+    % unique_for 'footer' => begin;
+        <div id="modal">...</div>
+    % end
+
+    ...
+
+    % unique_for 'footer' => begin;
+        <div id="modal">...</div>
+    % end
+
+    @@ layouts/default.html.ep
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <title>MyApp</title>
+        </head>
+        <body>
+            <%= content %>
+            %= content_for 'footer';
+        </body>
+    </html
+
+This example generate only one "modal" element:
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <title>MyApp</title>
+        </head>
+        <body>
+            <div id="modal">...</div>
         </body>
     </html>
 
