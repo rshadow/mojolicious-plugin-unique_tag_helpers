@@ -1,6 +1,8 @@
 Changes
 lib/Mojolicious/Plugin/UniqueTagHelpers.pm
 Makefile.PL
+MANIFEST
+MANIFEST.SKIP
 README.md
 t/00-load.t
 t/10-stylesheet.t
