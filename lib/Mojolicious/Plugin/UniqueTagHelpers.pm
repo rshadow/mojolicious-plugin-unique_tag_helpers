@@ -94,15 +94,15 @@ javascript and stylesheet links.
 
 =head1 DESCRIPTION
 
-L<Mojolicious::Plugin::UniqueTagHelpers> is a HTML tag helpers for
-javascript and stylesheet allowing multiple include in templates.
+L<Mojolicious::Plugin::UniqueTagHelpers> is a set of HTML tag helpers for
+javascript and stylesheets, allowing multiple includes in templates.
 
 =head1 OPTIONS
 
 =head2 max_key_length
 
-Maximun content length to use as is as keys. If content length more that it
-then use MD5 to make keys for reduce memory usage. Default: 256.
+Maximum content length to use as keys. If content length exceeds this, MD5
+will be used to make keys to reduce memory usage. Default: 256.
 
 =head1 HELPERS
 
@@ -130,7 +130,7 @@ then use MD5 to make keys for reduce memory usage. Default: 256.
         </body>
     </html
 
-This example generate only one link to F<css/main.css>:
+This example generates only one link to F<css/main.css>:
 
     <!DOCTYPE html>
     <html>
@@ -166,7 +166,7 @@ This example generate only one link to F<css/main.css>:
         </body>
     </html
 
-This example generate only one link to F<js/main.js>:
+This example generates only one link to F<js/main.js>:
 
     <!DOCTYPE html>
     <html>
@@ -204,7 +204,7 @@ This example generate only one link to F<js/main.js>:
         </body>
     </html
 
-This example generate only one "modal" element:
+This example generates only one "modal" element:
 
     <!DOCTYPE html>
     <html>
