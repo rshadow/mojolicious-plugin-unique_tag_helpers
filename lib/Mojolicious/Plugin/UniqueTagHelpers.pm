@@ -2,9 +2,13 @@ package Mojolicious::Plugin::UniqueTagHelpers;
 use Mojo::Base 'Mojolicious::Plugin';
 use Mojo::Util 'md5_sum';
 
-our $VERSION = '1.1';
+our $VERSION = '1.2';
 
-sub _block { ref $_[0] eq 'CODE' ? $_[0]() : $_[0] }
+sub _block {
+    ref $_[0] eq 'CODE' ? $_[0]() :
+    defined $_[0]       ? "$_[0]" :
+                          ''
+}
 
 sub register {
     my ($self, $app, $conf) = @_;
@@ -20,7 +24,7 @@ sub register {
         if( defined $content ) {
             $hash->{$name} ||= {};
             my $key = _block($content);
-            $key    = md5_sum( $key // '' )
+            $key    = md5_sum( $key )
                 if $conf->{max_key_length} < length $key;
 
             return $c->content( $name ) if exists $hash->{$name}{$key};
@@ -39,7 +43,7 @@ sub register {
         if( defined $content ) {
             $hash->{$name} ||= {};
             my $key = _block($content);
-            $key    = md5_sum( $key // '' )
+            $key    = md5_sum( $key )
                 if $conf->{max_key_length} < length $key;
 
             return $c->content( $name ) if exists $hash->{$name}{$key};
@@ -58,7 +62,7 @@ sub register {
         if( defined $content ) {
             $hash->{$name} ||= {};
             my $key = _block($content);
-            $key    = md5_sum( $key // '' )
+            $key    = md5_sum( $key )
                 if $conf->{max_key_length} < length $key;
 
             return $c->content( $name ) if exists $hash->{$name}{$key};
