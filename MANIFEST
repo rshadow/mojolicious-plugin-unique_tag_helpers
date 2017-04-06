@@ -15,5 +15,6 @@ t/22-javascript-mojo-url.t
 t/30-unique.t
 t/31-unique-block.t
 t/32-unique-long-key.t
+t/33-unique-utf8.t
 t/manifest.t
 t/pod.t

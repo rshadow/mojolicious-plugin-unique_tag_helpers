@@ -1,8 +1,9 @@
 package Mojolicious::Plugin::UniqueTagHelpers;
 use Mojo::Base 'Mojolicious::Plugin';
 use Mojo::Util 'md5_sum';
+use Encode qw(encode_utf8);
 
-our $VERSION = '1.2';
+our $VERSION = '1.3';
 
 sub _block {
     ref $_[0] eq 'CODE' ? $_[0]() :
@@ -24,7 +25,7 @@ sub register {
         if( defined $content ) {
             $hash->{$name} ||= {};
             my $key = _block($content);
-            $key    = md5_sum( $key )
+            $key    = md5_sum( encode_utf8($key) )
                 if $conf->{max_key_length} < length $key;
 
             return $c->content( $name ) if exists $hash->{$name}{$key};
@@ -43,7 +44,7 @@ sub register {
         if( defined $content ) {
             $hash->{$name} ||= {};
             my $key = _block($content);
-            $key    = md5_sum( $key )
+            $key    = md5_sum( encode_utf8($key) )
                 if $conf->{max_key_length} < length $key;
 
             return $c->content( $name ) if exists $hash->{$name}{$key};
@@ -62,7 +63,7 @@ sub register {
         if( defined $content ) {
             $hash->{$name} ||= {};
             my $key = _block($content);
-            $key    = md5_sum( $key )
+            $key    = md5_sum( encode_utf8($key) )
                 if $conf->{max_key_length} < length $key;
 
             return $c->content( $name ) if exists $hash->{$name}{$key};
